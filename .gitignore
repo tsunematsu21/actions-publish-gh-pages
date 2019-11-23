@@ -1,0 +1,12 @@
+# Logs
+logs
+*.log
+
+# Dependency directories
+node_modules/
+
+# Mac OSX
+.DS_Store
+
+# Typedocs
+docs

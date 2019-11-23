@@ -1,0 +1,30 @@
+name: Publish Typedoc to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Generate typedoc
+        run: yarn doc
+
+      - name: Publish to GitHub Pages
+        uses: ./
+        with:
+          dir: docs
+          branch: gh-pages
+          token: ${{ secrets.GITHUB_ACCESS_TOKEN }}

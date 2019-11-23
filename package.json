@@ -1,0 +1,51 @@
+{
+  "name": "actions-publish-gh-pages",
+  "version": "0.1.0",
+  "description": "GitHub Actions to publish static website using GitHub Pages",
+  "bugs": {
+    "url": "https://github.com/tsunematsu21/actions-publish-gh-pages/issues",
+    "email": "tsunematsu21@users.noreply.github.com"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "tsunematsu21",
+    "email": "tsunematsu21@users.noreply.github.com",
+    "url": "(https://github.com/tsunematsu21"
+  },
+  "main": "lib/main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tsunematsu21/actions-publish-gh-pages.git"
+  },
+  "scripts": {
+    "lint": "eslint src/**/*.ts",
+    "build": "ncc build src/index.ts -o lib",
+    "build:add": "git add lib",
+    "doc": "typedoc src"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.0",
+    "@actions/exec": "^1.0.1",
+    "@actions/github": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.12",
+    "@typescript-eslint/eslint-plugin": "^2.8.0",
+    "@typescript-eslint/parser": "^2.8.0",
+    "@zeit/ncc": "^0.20.5",
+    "eslint": "^6.7.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "husky": "^3.1.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.19.1",
+    "typedoc": "^0.15.3",
+    "typescript": "^3.7.2"
+  },
+  "private": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "run-s lint build build:add"
+    }
+  }
+}

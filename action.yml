@@ -1,0 +1,24 @@
+name: Publish to GitHub Pages
+author: tsunematsu21
+description: A GitHub Action to publish static website using GitHub Pages
+inputs:
+  dir:
+    description: The name of the directory that containing the content to be published
+    required: false
+    default: ./
+  branch:
+    description: The name of the remote branch that publishing source for GitHub Pages site
+    required: false
+    default: gh-pages
+  repo:
+    description: The remote repository that publishing source for GitHub Pages site, defaults to current repo and is formatted like 'user/repo-name'
+    required: false
+  token:
+    description: The personal access token that authorize repo access
+    required: true
+runs:
+  using: node12
+  main: lib/index.js
+branding:
+  icon: git-commit
+  color: green
