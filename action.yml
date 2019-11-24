@@ -20,5 +20,5 @@ runs:
   using: node12
   main: lib/index.js
 branding:
-  icon: git-commit
-  color: green
+  icon: smile
+  color: orange
