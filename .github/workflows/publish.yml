@@ -4,18 +4,21 @@ on:
   push:
     branches:
       - master
+    paths:
+      - '**.ts'
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code
+      - name: Checkout code
         uses: actions/checkout@v1
 
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+
       - name: Install dependencies
         run: yarn install
 
