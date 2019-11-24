@@ -1,0 +1,52 @@
+name: Create Draft Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Create Draft Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Generate docs
+        run: yarn doc
+
+      - name: Compress docs and LICENSE file
+        run: |
+          cp LICENSE docs
+          zip -r docs docs
+
+      - name: Create draft release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+          prerelease: true
+
+      - name: Upload docs as release asset
+        id: upload_release_asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./docs.zip
+          asset_name: docs.zip
+          asset_content_type: application/zip
