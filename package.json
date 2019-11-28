@@ -19,6 +19,7 @@
   },
   "scripts": {
     "lint": "eslint src/**/*.ts",
+    "test": "jest",
     "build": "ncc build src/index.ts -o lib",
     "build:add": "git add lib",
     "doc": "typedoc src"
