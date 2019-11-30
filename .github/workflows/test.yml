@@ -1,4 +1,4 @@
-name: Test
+name: Test for development branches
 
 on:
   push:
@@ -34,7 +34,7 @@ jobs:
       - name: Generate typedoc
         run: yarn doc
 
-      - name: Test publish
+      - name: Publish to test branch
         uses: ./
         with:
           dir: docs
