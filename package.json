@@ -1,6 +1,6 @@
 {
   "name": "actions-publish-gh-pages",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "GitHub Actions to publish static website using GitHub Pages",
   "bugs": {
     "url": "https://github.com/tsunematsu21/actions-publish-gh-pages/issues",
