@@ -24,6 +24,13 @@ describe("util", () => {
   jest.mock("@actions/io", () => ({
     async mkdirP(fsPath: string): Promise<void> {
       console.log(`mkdir ${fsPath}`);
+    },
+    async cp(
+      source: string,
+      dest: string,
+      options: { recursive: boolean }
+    ): Promise<void> {
+      console.log(`copy ${options ? "-r" : ""} ${source} ${dest}`);
     }
   }));
 
@@ -91,6 +98,27 @@ describe("util", () => {
       await util.init(context.url, context.branch);
       expect(spyLog.mock.calls[5][0]).toBe(
         `${temporaryDirectory}> git checkout --orphan ${context.branch}`
+      );
+    });
+  });
+
+  describe("update()", () => {
+    it("should be clear temporary directory", async () => {
+      await util.update(context.directory);
+      expect(spyLog.mock.calls[0][0]).toBe(
+        `${temporaryDirectory}> git rm -r --ignore-unmatch '*'`
+      );
+    });
+    it("should be copy contents to temporary directory", async () => {
+      await util.update(context.directory);
+      expect(spyLog.mock.calls[1][0]).toBe(
+        `copy -r ${context.directory}/. ${temporaryDirectory}/.`
+      );
+    });
+    it("shouldn't be clear temporary directory if clean flag is false", async () => {
+      await util.update(context.directory, false);
+      expect(spyLog.mock.calls[0][0]).toBe(
+        `copy -r ${context.directory}/. ${temporaryDirectory}/.`
       );
     });
   });
