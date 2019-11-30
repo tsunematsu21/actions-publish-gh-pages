@@ -40,3 +40,10 @@ jobs:
           dir: docs
           branch: test
           token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+
+      - name: Delete test branch
+        uses: actions/github-script@0.3.0
+        with:
+          github-token: ${{secrets.GITHUB_ACCESS_TOKEN}}
+          script: |
+            github.git.deleteRef({...context.ref, ref: 'heads/test'})
