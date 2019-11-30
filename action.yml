@@ -20,5 +20,5 @@ runs:
   using: node12
   main: lib/index.js
 branding:
-  icon: smile
+  icon: activity
   color: orange
