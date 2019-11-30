@@ -109,16 +109,63 @@ describe("util", () => {
         `${temporaryDirectory}> git rm -r --ignore-unmatch '*'`
       );
     });
+
     it("should be copy contents to temporary directory", async () => {
       await util.update(context.directory);
       expect(spyLog.mock.calls[1][0]).toBe(
         `copy -r ${context.directory}/. ${temporaryDirectory}/.`
       );
     });
+
     it("shouldn't be clear temporary directory if clean flag is false", async () => {
       await util.update(context.directory, false);
       expect(spyLog.mock.calls[0][0]).toBe(
         `copy -r ${context.directory}/. ${temporaryDirectory}/.`
+      );
+    });
+  });
+
+  describe("push()", () => {
+    const message = "Commit message";
+    it("should be add to stage", async () => {
+      await util.push(context.user, context.email, message);
+      expect(spyLog.mock.calls[0][0]).toBe(
+        `${temporaryDirectory}> git add --all`
+      );
+    });
+
+    it("should be setting user.name", async () => {
+      await util.push(context.user, context.email, message);
+      expect(spyLog.mock.calls[1][0]).toBe(
+        `${temporaryDirectory}> git config user.name "${context.user}"`
+      );
+    });
+
+    it("should be setting user.email", async () => {
+      await util.push(context.user, context.email, message);
+      expect(spyLog.mock.calls[2][0]).toBe(
+        `${temporaryDirectory}> git config user.email "${context.email}"`
+      );
+    });
+
+    it("should be commit with message", async () => {
+      await util.push(context.user, context.email, message);
+      expect(spyLog.mock.calls[3][0]).toBe(
+        `${temporaryDirectory}> git commit -m "${message}"`
+      );
+    });
+
+    it("should be setting push.default to current", async () => {
+      await util.push(context.user, context.email, message);
+      expect(spyLog.mock.calls[4][0]).toBe(
+        `${temporaryDirectory}> git config push.default current`
+      );
+    });
+
+    it("should be push local repository to remote", async () => {
+      await util.push(context.user, context.email, message);
+      expect(spyLog.mock.calls[5][0]).toBe(
+        `${temporaryDirectory}> git push origin`
       );
     });
   });
