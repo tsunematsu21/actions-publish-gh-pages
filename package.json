@@ -51,7 +51,7 @@
   "private": true,
   "husky": {
     "hooks": {
-      "pre-commit": "run-s lint build build:add"
+      "pre-commit": "run-s lint test build build:add"
     }
   }
 }
