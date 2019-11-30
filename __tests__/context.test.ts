@@ -65,7 +65,7 @@ describe("context", () => {
   describe("url", () => {
     it("should be GitHub repository URL with access token", async () => {
       expect(context.url).toBe(
-        `https://x-access-token:${context.token}@github.com/${context.repository}`
+        `https://${context.token}@github.com/${context.repository}.git`
       );
     });
   });
