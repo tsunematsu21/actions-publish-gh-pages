@@ -1,0 +1,42 @@
+name: Test
+
+on:
+  push:
+    branches-ignore:
+      - master
+      - releases
+
+jobs:
+  test:
+    name: Create Draft Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Lint check
+        run: yarn lint
+
+      - name: Unit test
+        run: yarn test
+
+      - name: Build
+        run: yarn build
+
+      - name: Generate typedoc
+        run: yarn doc
+
+      - name: Test publish
+        uses: ./
+        with:
+          dir: docs
+          branch: test
+          token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
