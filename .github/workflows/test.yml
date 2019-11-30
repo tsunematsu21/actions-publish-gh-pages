@@ -38,7 +38,7 @@ jobs:
         uses: ./
         with:
           dir: docs
-          branch: test
+          branch: test-${{ github.sha }}
           token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
 
       - name: Delete test branch
@@ -46,4 +46,4 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_ACCESS_TOKEN}}
           script: |
-            github.git.deleteRef({owner: context.payload.repository.owner.login, repo: context.payload.repository.name, ref: 'heads/test'})
+            github.git.deleteRef({owner: context.payload.repository.owner.login, repo: context.payload.repository.name, ref: `heads/test-${context.sha}`})
