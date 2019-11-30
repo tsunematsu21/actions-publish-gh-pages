@@ -1,7 +1,11 @@
+import * as path from "path";
 import { exec } from "@actions/exec";
 import * as io from "@actions/io";
 
-const cwd = `${process.env.HOME}/actions_publish_gh_pages_temporary_directory`;
+const cwd = path.join(
+  process.env.HOME,
+  "/actions_publish_gh_pages_temporary_directory"
+);
 
 async function git(cmd: string): Promise<number> {
   return await exec(`git ${cmd}`, [], { cwd });
