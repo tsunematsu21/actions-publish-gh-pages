@@ -2,9 +2,10 @@ name: Test for development branches
 
 on:
   push:
-    branches-ignore:
-      - master
-      - releases
+    pull_request:
+      types:
+        - opened
+        - synchronize
 
 jobs:
   test:
