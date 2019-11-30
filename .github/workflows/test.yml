@@ -46,4 +46,4 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_ACCESS_TOKEN}}
           script: |
-            github.git.deleteRef({...context.ref, ref: 'heads/test'})
+            github.git.deleteRef({owner: context.payload.repository.owner.login, repo: context.payload.repository.name, ref: 'heads/test'})
