@@ -3,37 +3,30 @@ import { directory, branch, repository, url, name, email } from "./context";
 import * as util from "./util";
 
 async function publish(): Promise<void> {
-  const temporaryDirectory = `${process.env.HOME}/actions_publish_gh_pages_temporary_directory`;
-  const contentsDirectory = `${process.env.GITHUB_WORKSPACE}/${directory}`;
-  const actionMessage = `Publish '${directory}' directory to '${branch}' branch in '${repository}' repository`;
+  const message = `Publish '${directory}' directory to '${branch}' branch in '${repository}' repository`;
 
   try {
-    core.info(actionMessage);
-
-    core.startGroup(`Make temporary directory`);
-    const cwd = await util.makeTemporaryDirectory(temporaryDirectory);
-    core.endGroup();
+    core.info(message);
 
     core.startGroup(`Initialize local repository`);
     core.debug(`Remote: ${url}`);
     core.debug(`Branch: ${branch}`);
-    await util.initializeLocalRepository(cwd, url);
-    await util.checkout(cwd, branch);
+    await util.init(url, branch);
     core.endGroup();
 
     core.startGroup(`Update local repository`);
-    core.debug(`Contents directory: ${contentsDirectory}`);
-    await util.updateLocalRepository(cwd, contentsDirectory);
+    core.debug(`Contents directory: ${directory}`);
+    await util.update(directory);
     core.endGroup();
 
     core.startGroup(`Push local repository`);
     core.debug(`Commiter name: ${name}`);
     core.debug(`Commiter email: ${email}`);
-    core.debug(`Commit messagge: ${actionMessage}`);
-    await util.pushLocalRepository(cwd, name, email, actionMessage);
+    core.debug(`Commit messagge: ${message}`);
+    await util.push(name, email, message);
     core.endGroup();
   } catch (error) {
-    core.setFailed(error.message);
+    core.setFailed(error);
   }
 }
 
