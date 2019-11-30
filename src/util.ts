@@ -4,9 +4,8 @@ import * as io from "@actions/io";
 
 export const TEMPORARY_DIRECTORY = `${process.env.HOME}/actions_publish_gh_pages_temporary_directory`;
 
-export async function git(cmd: string, cwd: string): Promise<number> {
-  const exitCode = await exec(`git ${cmd}`, [], { cwd });
-  return Promise.resolve(exitCode);
+export function git(cmd: string, cwd: string): Promise<number> {
+  return exec(`git ${cmd}`, [], { cwd });
 }
 
 export async function makeTemporaryDirectory(
@@ -16,7 +15,7 @@ export async function makeTemporaryDirectory(
     await io.mkdirP(path);
     return path;
   } catch (error) {
-    core.setFailed(
+    throw new Error(
       `There was an error making the temporary directory. ${error}`
     );
   }
@@ -26,29 +25,36 @@ export async function initializeLocalRepository(
   cwd: string,
   url: string
 ): Promise<void> {
-  try {
-    await git(`init`, cwd);
-    // await git(`config user.name ""`, cwd);
-    // await git(`config user.email ""`, cwd);
-    await git(`remote add origin "${url}"`, cwd);
-    await git(`fetch --prune`, cwd);
-  } catch (error) {
-    core.setFailed(
-      `There was an error initializing the local repository. ${error}`
+  await git(`init`, cwd).catch(error => {
+    throw new Error(
+      `There was an error initilizing local repository. ${error}`
     );
-  }
+  });
+  await git(`remote add origin "${url}"`, cwd).catch(error => {
+    throw new Error(`There was an error adding remote repository. ${error}`);
+  });
+  await git(`fetch --prune`, cwd).catch(error => {
+    throw new Error(`There was an error fetching remote repository. ${error}`);
+  });
 }
 
 export async function checkout(cwd: string, branch: string): Promise<void> {
-  try {
-    await git(`checkout -b ${branch} origin/${branch}`, cwd);
-  } catch (error) {
-    try {
+  await git(`checkout -b ${branch} origin/${branch}`, cwd)
+    .catch(async () => {
       await git(`checkout --orphan ${branch}`, cwd);
-    } catch (error) {
-      core.setFailed(`There was an error checking out the branch. ${error}`);
-    }
-  }
+    })
+    .catch(error => {
+      throw new Error(`There was an error checking out the branch. ${error}`);
+    });
+  // try {
+  //   await git(`checkout -b ${branch} origin/${branch}`, cwd);
+  // } catch (error) {
+  //   try {
+  //     await git(`checkout --orphan ${branch}`, cwd);
+  //   } catch (error) {
+  //     throw new Error(`There was an error checking out the branch. ${error}`);
+  //   }
+  // }
 }
 
 export async function updateLocalRepository(
@@ -65,6 +71,7 @@ export async function updateLocalRepository(
     core.setFailed(
       `There was an error updating the local repository. ${error}`
     );
+    throw new Error(error);
   }
 }
 
@@ -76,14 +83,13 @@ export async function pushLocalRepository(
 ): Promise<void> {
   try {
     await git(`add --all`, cwd);
-
     await git(`config user.name "${name}"`, cwd);
     await git(`config user.email "${email}"`, cwd);
     await git(`commit -m "${message}"`, cwd);
-
     await git(`config push.default current`, cwd);
     await git(`push origin`, cwd);
   } catch (error) {
     core.setFailed(`There was an error pushing the local repository. ${error}`);
+    throw new Error(error);
   }
 }

@@ -17,23 +17,23 @@ async function publish(): Promise<void> {
     core.startGroup(`Initialize local repository`);
     core.debug(`Remote: ${url}`);
     core.debug(`Branch: ${branch}`);
-    util.initializeLocalRepository(cwd, url);
-    util.checkout(cwd, branch);
+    await util.initializeLocalRepository(cwd, url);
+    await util.checkout(cwd, branch);
     core.endGroup();
 
     core.startGroup(`Update local repository`);
     core.debug(`Contents directory: ${contentsDirectory}`);
-    util.updateLocalRepository(cwd, contentsDirectory);
+    await util.updateLocalRepository(cwd, contentsDirectory);
     core.endGroup();
 
     core.startGroup(`Push local repository`);
     core.debug(`Commiter name: ${name}`);
     core.debug(`Commiter email: ${email}`);
     core.debug(`Commit messagge: ${actionMessage}`);
-    util.pushLocalRepository(cwd, name, email, actionMessage);
+    await util.pushLocalRepository(cwd, name, email, actionMessage);
     core.endGroup();
   } catch (error) {
-    core.setFailed(error.actionMessage);
+    core.setFailed(error.message);
   }
 }
 
