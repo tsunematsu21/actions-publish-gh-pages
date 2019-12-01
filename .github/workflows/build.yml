@@ -1,0 +1,45 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - improve-dev-env
+    paths:
+      - 'src/**'
+
+jobs:
+  test:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Lint check
+        run: yarn lint
+
+      - name: Unit test
+        run: yarn test
+
+      - name: Build
+        run: yarn build
+
+      - name: Push generated files
+        run: |
+          git config --local user.name "${GITHUB_ACTOR}"
+          git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git add -f lib
+          git commit --no-verify -m "chore: build"
+          git push "https://${TOKEN}@github.com/${REPOSITORY}.git" HEAD:${BRANCH}
+        env:
+          TOKEN: ${{secrets.GITHUB_ACCESS_TOKEN}}
+          REPOSITORY: ${{github.repository}}
+          BRANCH: improve-dev-env

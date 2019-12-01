@@ -1,0 +1,50 @@
+name: Test pull request
+
+on:
+  push:
+    pull_request:
+      types:
+        - opened
+        - synchronize
+
+jobs:
+  test:
+    name: Test pull request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Lint check
+        run: yarn lint
+
+      - name: Unit test
+        run: yarn test
+
+      - name: Build
+        run: yarn build
+
+      - name: Generate typedoc
+        run: yarn doc
+
+      - name: Publish to temporary branch
+        uses: ./
+        with:
+          dir: docs
+          branch: test-${{ github.sha }}
+          token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+
+      - name: Delete temporary branch
+        uses: actions/github-script@0.3.0
+        with:
+          github-token: ${{secrets.GITHUB_ACCESS_TOKEN}}
+          script: |
+            github.git.deleteRef({owner: context.payload.repository.owner.login, repo: context.payload.repository.name, ref: `heads/test-${context.sha}`})
