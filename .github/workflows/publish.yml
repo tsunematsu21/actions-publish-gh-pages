@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - '**.ts'
+      - 'src/**'
 
 jobs:
   publish:
