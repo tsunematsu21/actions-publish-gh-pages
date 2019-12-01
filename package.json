@@ -21,7 +21,6 @@
     "lint": "eslint src/**/*.ts __tests__/**/*.ts",
     "test": "jest",
     "build": "ncc build src/index.ts -o lib",
-    "build:add": "git add lib",
     "doc": "typedoc src"
   },
   "dependencies": {
@@ -56,7 +55,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "run-s lint test build build:add",
+      "pre-commit": "run-s lint test build",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   }
