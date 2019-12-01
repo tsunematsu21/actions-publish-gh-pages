@@ -39,7 +39,7 @@ jobs:
             git config --local user.name "${GITHUB_ACTOR}"
             git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.co"
             git add -f lib
-            git commit -m "chore: build"
+            git commit --no-verify -m "chore: build"
             git push "https://${TOKEN}@github.com/${REPOSITORY}.git" HEAD:${BRANCH}
           fi
         env:
