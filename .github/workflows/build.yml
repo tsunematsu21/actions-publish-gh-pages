@@ -32,14 +32,14 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Commit generated files
+      - name: Push generated files
         run: |
-          git config --local user.name "tsunematsu21"
-          git config --local user.email "tsunematsu21@users.noreply.github.co"
+          git config --local user.name "${GITHUB_ACTOR}"
+          git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.co"
           git add -f lib
           git commit -m "chore: build"
-
-      - name: GitHub Push
-        uses: ad-m/github-push-action@v0.5.0
-        with:
-          github_token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          git push "https://${TOKEN}@github.com/${REPOSITORY}.git" HEAD:${BRANCH}
+        env:
+          TOKEN: ${{secrets.GITHUB_ACCESS_TOKEN}}
+          REPOSITORY: ${{github.repository}}
+          BRANCH: improve-dev-env
