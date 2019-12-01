@@ -35,7 +35,7 @@ jobs:
       - name: Push generated files
         run: |
           git config --local user.name "${GITHUB_ACTOR}"
-          git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.co"
+          git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.com"
           git add -f lib
           git commit --no-verify -m "chore: build"
           git push "https://${TOKEN}@github.com/${REPOSITORY}.git" HEAD:${BRANCH}
