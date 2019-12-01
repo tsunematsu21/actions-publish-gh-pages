@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - improve-dev-env
-    # paths:
-    #   - 'src/**'
+    paths:
+      - 'src/**'
 
 jobs:
   test:
@@ -34,14 +34,11 @@ jobs:
 
       - name: Push generated files
         run: |
+          git config --local user.name "${GITHUB_ACTOR}"
+          git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.co"
           git add -f lib
-          DIFF_LINE_COUNT=`git diff lib | wc -l`
-          if [ ${DIFF_LINE_COUNT} -gt 0 ]; then
-            git config --local user.name "${GITHUB_ACTOR}"
-            git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.co"
-            git commit --no-verify -m "chore: build"
-            git push "https://${TOKEN}@github.com/${REPOSITORY}.git" HEAD:${BRANCH}
-          fi
+          git commit --no-verify -m "chore: build"
+          git push "https://${TOKEN}@github.com/${REPOSITORY}.git" HEAD:${BRANCH}
         env:
           TOKEN: ${{secrets.GITHUB_ACCESS_TOKEN}}
           REPOSITORY: ${{github.repository}}
