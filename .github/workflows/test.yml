@@ -1,4 +1,4 @@
-name: Test for development branches
+name: Test pull request
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   test:
-    name: Create Draft Release
+    name: Test pull request
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -35,14 +35,14 @@ jobs:
       - name: Generate typedoc
         run: yarn doc
 
-      - name: Publish to test branch
+      - name: Publish to temporary branch
         uses: ./
         with:
           dir: docs
           branch: test-${{ github.sha }}
           token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
 
-      - name: Delete test branch
+      - name: Delete temporary branch
         uses: actions/github-script@0.3.0
         with:
           github-token: ${{secrets.GITHUB_ACCESS_TOKEN}}
