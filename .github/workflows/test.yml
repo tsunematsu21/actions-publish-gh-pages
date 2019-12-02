@@ -1,11 +1,10 @@
 name: Test pull request
 
 on:
-  push:
-    pull_request:
-      types:
-        - opened
-        - synchronize
+  pull_request:
+    types:
+      - opened
+      - synchronize
 
 jobs:
   test:
