@@ -3,7 +3,7 @@ import { directory, branch, repository, url, name, email } from "./context";
 import * as util from "./util";
 
 export async function publish(): Promise<void> {
-  const message = `Publish '${directory}' directory to '${branch}' branch in '${repository}' repository`;
+  const message = `Publish '${directory}' to '${branch}' in '${repository}'`;
 
   try {
     core.info(`Start: ${message}`);
