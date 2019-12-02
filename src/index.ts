@@ -2,7 +2,7 @@ import * as core from "@actions/core";
 import { directory, branch, repository, url, name, email } from "./context";
 import * as util from "./util";
 
-async function publish(): Promise<void> {
+export async function publish(): Promise<void> {
   const message = `Publish '${directory}' directory to '${branch}' branch in '${repository}' repository`;
 
   try {
