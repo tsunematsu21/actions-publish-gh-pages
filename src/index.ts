@@ -6,7 +6,7 @@ export async function publish(): Promise<void> {
   const message = `Publish '${directory}' directory to '${branch}' branch in '${repository}' repository`;
 
   try {
-    core.info(message);
+    core.info(`Start: ${message}`);
 
     core.startGroup(`Initialize local repository`);
     core.debug(`Remote: ${url}`);
@@ -25,6 +25,8 @@ export async function publish(): Promise<void> {
     core.debug(`Commit messagge: ${message}`);
     await util.push(name, email, message);
     core.endGroup();
+
+    core.info(`End: ${message}`);
   } catch (error) {
     core.setFailed(error);
   }
