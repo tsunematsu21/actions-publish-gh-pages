@@ -42,4 +42,4 @@ jobs:
         env:
           TOKEN: ${{secrets.GITHUB_ACCESS_TOKEN}}
           REPOSITORY: ${{github.repository}}
-          BRANCH: improve-dev-env
+          BRANCH: master
