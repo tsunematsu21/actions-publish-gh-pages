@@ -40,6 +40,6 @@ jobs:
           git commit --no-verify -m "chore: build"
           git push "https://${TOKEN}@github.com/${REPOSITORY}.git" HEAD:${BRANCH}
         env:
-          TOKEN: ${{secrets.GITHUB_ACCESS_TOKEN}}
+          TOKEN: ${{secrets.ACCESS_TOKEN}}
           REPOSITORY: ${{github.repository}}
           BRANCH: master

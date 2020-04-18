@@ -39,11 +39,11 @@ jobs:
         with:
           dir: docs
           branch: test-${{ github.sha }}
-          token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Delete temporary branch
         uses: actions/github-script@0.3.0
         with:
-          github-token: ${{secrets.GITHUB_ACCESS_TOKEN}}
+          github-token: ${{secrets.ACCESS_TOKEN}}
           script: |
             github.git.deleteRef({owner: context.payload.repository.owner.login, repo: context.payload.repository.name, ref: `heads/test-${context.sha}`})
