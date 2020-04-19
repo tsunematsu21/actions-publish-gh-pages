@@ -38,7 +38,7 @@ jobs:
         run: # Your amazing generate action
 
       - name: Publish generated content to GitHub Pages
-        uses: tsunematsu21/actions-publish-gh-pages@v1.0.0
+        uses: tsunematsu21/actions-publish-gh-pages@v1.0.1
         with:
           dir: dist
           branch: gh-pages
