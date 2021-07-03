@@ -15,14 +15,14 @@ export async function publish(): Promise<void> {
     core.endGroup();
 
     core.startGroup(`Update local repository`);
-    core.debug(`Contents directory: ${directory}`);
+    core.debug(`Content directory: ${directory}`);
     await util.update(directory);
     core.endGroup();
 
     core.startGroup(`Push local repository`);
-    core.debug(`Commiter name: ${name}`);
-    core.debug(`Commiter email: ${email}`);
-    core.debug(`Commit messagge: ${message}`);
+    core.debug(`Committer name: ${name}`);
+    core.debug(`Committer email: ${email}`);
+    core.debug(`Commit message: ${message}`);
     await util.push(name, email, message);
     core.endGroup();
 
