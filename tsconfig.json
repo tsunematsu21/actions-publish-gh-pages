@@ -6,7 +6,6 @@
     "esModuleInterop": true
   },
   "typedocOptions": {
-    "mode": "file",
     "out": "docs"
   }
 }
